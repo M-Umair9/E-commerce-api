@@ -1,16 +1,15 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import authRoutes from './routes/authRoutes.js'; 
 import dotenv from 'dotenv';
 dotenv.config(); 
-import jwt from 'jsonwebtoken';
-import { User } from './models/Login.js';
 
-const server =express();
+const app =express();
  
-server.use(express.json());
+app.use(express.json());
  
 
-
+   //database connection  
 main().catch(err=>console.log(err));                //call main and catch error
  async function main() {                                     //function to connect to mongoose
    const mongoUri= process.env.MONGO_URI                        
@@ -18,18 +17,16 @@ main().catch(err=>console.log(err));                //call main and catch error
     console.log('database connected');
  }
    
- 
+ app.use('/api/auth',authRoutes)
 
-server.get('/',(req, res)=>{    //to check if the server is functional
-    res.json({status:'success'})
-})
 
-server.listen(8080,()=>{
+
+app.listen(8080,()=>{
     console.log('server started');
 })
 
 // Route to handle POST request
-server.post('/add-user', async (req, res) => {
+{/**server.post('/add-user', async (req, res) => {
     const { name, email, password } = req.body;
   
     try {
@@ -39,5 +36,5 @@ server.post('/add-user', async (req, res) => {
     } catch (error) {
       res.status(500).json({ error: 'Error adding user' });
     }
-  });
+  }); */}
   
