@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import authRoutes from './routes/authRoutes.js'; 
 import dotenv from 'dotenv';
 import router from './routes/authRoutes.js';
+import productrouter from './routes/productRoutes.js';
+import productRoutes from './routes/productRoutes.js'
 dotenv.config(); 
 
 const app =express();
@@ -17,9 +19,11 @@ main().catch(err=>console.log(err)) ;                //call main and catch error
     await mongoose.connect(mongoUri); 
     console.log('database connected');
  }
-   
- app.use('/api/auth',authRoutes)
+   //Routes
 app.use(router);
+app.use(productrouter);
+app.use('/api/auth',authRoutes)                  //Add Auth routes
+app.use('/api/products', productRoutes);         // Add product routes
 
 
 app.listen(8080,()=>{
