@@ -37,10 +37,18 @@ export const removeItemFromCart = async (req, res) => {
   const { userId } = req.body;
   const { itemId } = req.params;
 
+
+   // Validation check
+   if (!userId || !itemId) {
+    return res.status(400).json({ message: 'userId and itemId are required' });
+  }
   try {
     const cart = await Cart.findOne({ userId });
 
-    if (cart) {
+    if (!cart) {
+      console.log(`Cart not found for userId: ${userId}`); // Log the error
+      return res.status(404).json({ message: 'Cart not found' });
+    }
       const itemIndex = cart.items.findIndex(item => item._id.toString() === itemId);
 
       if (itemIndex > -1) {
@@ -50,9 +58,7 @@ export const removeItemFromCart = async (req, res) => {
       } else {
         res.status(404).json({ message: 'Item not found in cart' });
       }
-    } else {
-      res.status(404).json({ message: 'Cart not found' });
-    }
+   
 
   } catch (error) {
     res.status(500).json({ message: 'Error removing item from cart', error: error.message });
