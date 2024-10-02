@@ -5,6 +5,10 @@ import dotenv from 'dotenv';
 import router from './routes/authRoutes.js';
 import productrouter from './routes/productRoutes.js';
 import productRoutes from './routes/productRoutes.js'
+import cartRouters from './routes/cartRoutes.js';
+import cartrouter from './routes/cartRoutes.js';
+import orderrouter from './routes/orderRoutes.js';
+import orderRouter from './routes/orderRoutes.js';
 dotenv.config(); 
 
 const app =express();
@@ -22,9 +26,12 @@ main().catch(err=>console.log(err)) ;                //call main and catch error
    //Routes
 app.use(router);
 app.use(productrouter);
+app.use(cartrouter);
+app.use(orderrouter);
 app.use('/api/auth',authRoutes)                  //Add Auth routes
 app.use('/api/products', productRoutes);         // Add product routes
-
+app.use('/api/cart', cartRouters);
+app.use('/api/order',orderRouter);
 
 app.listen(8080,()=>{
     console.log('server started');
